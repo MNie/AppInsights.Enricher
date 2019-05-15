@@ -14,6 +14,7 @@ namespace AppInsights.Enricher.WebApi
     using ResultType.Extensions;
     using ResultType.Factories;
     using ResultType.Operations;
+    using Telemetry.Processor;
 
     public class TelemetryEnricherStub : ITelemetryEnricher
     {
@@ -46,8 +47,9 @@ namespace AppInsights.Enricher.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<ITelemetryEnricher, DefaultTelemetryEnricher>();
+            services.AddSingleton<IProcessorApplier, DefaultProcessorApplier>();
             services.AddSingleton<IRequestDataAccessor>(new RequestDataAccessor(1_000, 1_000, 100_000, x => true));
-            services.AddTelemetry<Processor>(_conf)
+            services.AddTelemetry<TelemetryProcessor>(_conf)
                 .Bind(s =>
                 {
                     s.AddSwaggerGen(c =>
