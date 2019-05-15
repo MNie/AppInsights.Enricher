@@ -37,9 +37,9 @@ namespace AppInsights.Enricher.Tests
             return _httpContextAccessor;
         }
 
-        private static IHttpBodyAccessor CreateBodyAccessor()
+        private static IRequestDataAccessor CreateBodyAccessor()
         {
-            var mock = new Mock<IHttpBodyAccessor>();
+            var mock = new Mock<IRequestDataAccessor>();
             mock.Setup(x => x.GetHttpBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
             return mock.Object;
         }
@@ -97,9 +97,9 @@ namespace AppInsights.Enricher.Tests
             return _httpContextAccessor;
         }
         
-        private static IHttpBodyAccessor CreateBodyAccessor()
+        private static IRequestDataAccessor CreateBodyAccessor()
         {
-            var mock = new Mock<IHttpBodyAccessor>();
+            var mock = new Mock<IRequestDataAccessor>();
             mock.Setup(x => x.GetHttpBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
             return mock.Object;
         }
@@ -143,9 +143,9 @@ namespace AppInsights.Enricher.Tests
             return _httpContextAccessor;
         }
         
-        private static IHttpBodyAccessor CreateBodyAccessor()
+        private static IRequestDataAccessor CreateBodyAccessor()
         {
-            var mock = new Mock<IHttpBodyAccessor>();
+            var mock = new Mock<IRequestDataAccessor>();
             mock.Setup(x => x.GetHttpBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
             return mock.Object;
         }
@@ -188,9 +188,9 @@ namespace AppInsights.Enricher.Tests
             return _httpContextAccessor;
         }
         
-        private static IHttpBodyAccessor CreateBodyAccessor()
+        private static IRequestDataAccessor CreateBodyAccessor()
         {
-            var mock = new Mock<IHttpBodyAccessor>();
+            var mock = new Mock<IRequestDataAccessor>();
             mock.Setup(x => x.GetHttpBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
             return mock.Object;
         }
@@ -229,9 +229,9 @@ namespace AppInsights.Enricher.Tests
             return _httpContextAccessor;
         }
         
-        private static IHttpBodyAccessor CreateBodyAccessor()
+        private static IRequestDataAccessor CreateBodyAccessor()
         {
-            var mock = new Mock<IHttpBodyAccessor>();
+            var mock = new Mock<IRequestDataAccessor>();
             mock.Setup(x => x.GetHttpBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
             return mock.Object;
         }

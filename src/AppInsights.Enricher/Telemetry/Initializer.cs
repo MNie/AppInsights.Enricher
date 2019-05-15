@@ -13,12 +13,12 @@
     public class Initializer : ITelemetryInitializer
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IHttpBodyAccessor _httpBodyAccessor;
+        private readonly IRequestDataAccessor _requestDataAccessor;
         private readonly ITelemetryEnricher _telemetryEnricher;
-        public Initializer(IHttpContextAccessor httpContextAccessor, IHttpBodyAccessor httpBodyAccessor, ITelemetryEnricher telemetryEnricher)
+        public Initializer(IHttpContextAccessor httpContextAccessor, IRequestDataAccessor requestDataAccessor, ITelemetryEnricher telemetryEnricher)
         {
             _httpContextAccessor = httpContextAccessor;
-            _httpBodyAccessor = httpBodyAccessor;
+            _requestDataAccessor = requestDataAccessor;
             _telemetryEnricher = telemetryEnricher;
         }
 
@@ -76,7 +76,7 @@
         private Result<string> GetBody(Func<string, string> decorateItentifier)
         {
             var context = _httpContextAccessor.HttpContext;
-            return _httpBodyAccessor.GetHttpBody(decorateItentifier(context.TraceIdentifier));
+            return _requestDataAccessor.GetHttpBody(decorateItentifier(context.TraceIdentifier));
         }
 
         private bool HasBody()

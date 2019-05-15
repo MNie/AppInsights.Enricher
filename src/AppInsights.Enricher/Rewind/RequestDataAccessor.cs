@@ -15,13 +15,13 @@ namespace AppInsights.Enricher.Rewind
     using ResultType.Operations;
     using ResultType.Results;
 
-    public class HttpBodyAccessor : IHttpBodyAccessor
+    public class RequestDataAccessor : IRequestDataAccessor
     {
         private readonly MemoryCache _cache;
         private readonly TimeSpan _expirationInMs;
         private readonly Predicate<HttpContext> _pred;
 
-        public HttpBodyAccessor(long cacheSize, int scanFrequencyMs, int expirationInMs, Predicate<HttpContext> pred)
+        public RequestDataAccessor(long cacheSize, int scanFrequencyMs, int expirationInMs, Predicate<HttpContext> pred)
         {
             var cacheOptions = new MemoryCacheOptions
             {
@@ -62,11 +62,11 @@ namespace AppInsights.Enricher.Rewind
             ReadRequest(descriptor, args)
                 .Bind(body => SetEntryInCache(KeyGenerator.Request(context.TraceIdentifier), body));
 
-        public Result<Unit> SetHttpBody(HttpContext context, ActionDescriptor descriptor, IActionResult result) =>
-            ReadResponse(descriptor, result)
+        public Result<Unit> SetHttpBody(HttpContext context, IActionResult result) =>
+            ReadResponse(result)
                 .Bind(body => SetEntryInCache(KeyGenerator.Response(context.TraceIdentifier), body));
 
-        private static Result<string> ReadResponse(ActionDescriptor descriptor, IActionResult result)
+        private static Result<string> ReadResponse(IActionResult result)
         {
             try
             {

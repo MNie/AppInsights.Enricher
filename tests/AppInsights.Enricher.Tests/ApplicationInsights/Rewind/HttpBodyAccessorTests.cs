@@ -8,6 +8,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
     using System.Threading.Tasks;
     using Enricher.Rewind;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
     using Shouldly;
     using Xunit;
 
@@ -16,7 +17,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public void SetHttpBody_WhenBodyIsEmpty_ReturnFailureAndDoNotPersistData()
         {
-            var sut = new HttpBodyAccessor(10, 1000, 20_000, _ => true);
+            var sut = new RequestDataAccessor(10, 1000, 20_000, _ => true);
 
             var result =
                 sut.SetHttpBody(
@@ -30,7 +31,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                     {
                         ["arg"] = null
                     });
-            var entry = sut.GetHttpBody("dd");
+            var entry = sut.GetHttpBody("Request_dd");
 
             result.IsFailure.ShouldBeTrue();
             entry.IsFailure.ShouldBeTrue();
@@ -39,7 +40,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public void SetHttpBody_WhenBodyUnderGivenKeyAlreadyExists_ReturnTheNewestOne()
         {
-            var sut = new HttpBodyAccessor(10, 1000, 20_000, _ => true);
+            var sut = new RequestDataAccessor(10, 1000, 20_000, _ => true);
 
             sut.SetHttpBody(
                 new DefaultHttpContext()
@@ -65,7 +66,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
             {
                 ["arg"] = "ddd2312"
             });
-            var entry = sut.GetHttpBody("dd");
+            var entry = sut.GetHttpBody("Request_dd");
 
             result.IsSuccess.ShouldBeTrue();
             entry.IsSuccess.ShouldBeTrue();
@@ -78,7 +79,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public void SetHttpBody_WhenAnotherBodyExceedsCacheSizeLimit_ReturnFailure()
         {
-            var sut = new HttpBodyAccessor(1, 1000, 20_000, _ => true);
+            var sut = new RequestDataAccessor(1, 1000, 20_000, _ => true);
 
             var context = new DefaultHttpContext()
             {
@@ -105,7 +106,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                     {
                         ["arg"] = "ddd2312"
                     });
-            var entry = sut.GetHttpBody("dd");
+            var entry = sut.GetHttpBody("Request_dd");
 
             result.IsFailure.ShouldBeTrue();
             entry.IsSuccess.ShouldBeTrue();
@@ -116,10 +117,9 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         }
 
         [Fact]
-        public async Task
-            SetHttpBody_WhenBodyIsNotEmptyAndPredicateMatches_ReturnSuccessAndPersistDataInCacheFor5SecondsAndRewindDataAndResetPosition()
+        public async Task SetHttpBody_WhenBodyIsNotEmptyAndPredicateMatches_ReturnSuccessAndPersistDataInCacheFor5SecondsAndRewindDataAndResetPosition()
         {
-            var sut = new HttpBodyAccessor(1, 1000, 1_000, _ => true);
+            var sut = new RequestDataAccessor(1, 1000, 1_000, _ => true);
 
             var context = new DefaultHttpContext()
             {
@@ -133,7 +133,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
             {
                 ["arg"] = "ddd"
             });
-            var entry = sut.GetHttpBody("dd");
+            var entry = sut.GetHttpBody("Request_dd");
 
             result.IsSuccess.ShouldBeTrue();
             entry.IsSuccess.ShouldBeTrue();
@@ -144,39 +144,15 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
 
             await Task.Delay(2000);
 
-            var possibleEntry = sut.GetHttpBody("dd");
+            var possibleEntry = sut.GetHttpBody("Request_dd");
 
             possibleEntry.IsFailure.ShouldBeTrue();
         }
 
         [Fact]
-        public void SetHttpBody_WhenBodyIsNotEmptyAndPredicateNotMatches_ReturnFailureAndNotPersistDataInCache()
-        {
-            var sut = new HttpBodyAccessor(1, 1000, 1_000, x => x.Request.ContentLength > 1000);
-
-            var result =
-                sut.SetHttpBody(
-                    new DefaultHttpContext()
-                    {
-                        Request = {Body = new MemoryStream(Encoding.UTF8.GetBytes("ddd")), ContentLength = 10},
-                        TraceIdentifier = "dd"
-                    }, new Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor()
-                    {
-                        MethodInfo = new DynamicMethod("", typeof(string), new Type[0])
-                    }, new Dictionary<string, object>()
-                    {
-                        ["arg"] = "ddd"
-                    });
-            var entry = sut.GetHttpBody("dd");
-
-            result.IsFailure.ShouldBeTrue();
-            entry.IsFailure.ShouldBeTrue();
-        }
-
-        [Fact]
         public void SetHttpBody_WhenReadingBodyErrorOccurred_ReturnFailureAndLogInformation()
         {
-            var sut = new HttpBodyAccessor(1, 1000, 1_000, x => true);
+            var sut = new RequestDataAccessor(1, 1000, 1_000, x => true);
 
             var stream = new MemoryStream(Encoding.UTF8.GetBytes("ddd"));
             stream.Dispose();
@@ -190,16 +166,66 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                     {
                         ["arg"] = "ddd"
                     });
-            var entry = sut.GetHttpBody("dd");
+            var entry = sut.GetHttpBody("Request_dd");
 
             result.IsSuccess.ShouldBeTrue();
+            entry.IsFailure.ShouldBeTrue();
+        }
+        
+        [Fact]
+        public void SetHttpBody_WhenResponseIsNotAnObject_ReturnFailure()
+        {
+            var sut = new RequestDataAccessor(1, 1000, 1_000, x => true);
+
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes("ddd"));
+            stream.Dispose();
+            var result =
+                sut.SetHttpBody(
+                    new DefaultHttpContext() {Request = {Body = stream, ContentLength = 10}, TraceIdentifier = "ddd"},
+                    null as IActionResult);
+            var entry = sut.GetHttpBody("Response_ddd");
+
+            result.IsFailure.ShouldBeTrue();
+            entry.IsFailure.ShouldBeTrue();
+        }
+        
+        [Fact]
+        public void SetHttpBody_WhenResponseIsOk_ReturnSuccessWithValueFromOk()
+        {
+            var sut = new RequestDataAccessor(1, 1000, 100_000, x => true);
+
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes("ddd"));
+            var result =
+                sut.SetHttpBody(
+                    new DefaultHttpContext() {Request = {Body = stream, ContentLength = 10}, TraceIdentifier = "ddd"},
+                    new OkObjectResult("dede"));
+            var entry = sut.GetHttpBody("Response_ddd");
+
+            result.IsSuccess.ShouldBeTrue();
+            entry.IsSuccess.ShouldBeTrue();
+            entry.Payload.ShouldBe("\"dede\"");
+        }
+        
+        [Fact]
+        public void SetHttpBody_WhenResponseIsBadRequestWithData_ReturnsFailure()
+        {
+            var sut = new RequestDataAccessor(1, 1000, 1_000, x => true);
+
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes("ddd"));
+            var result =
+                sut.SetHttpBody(
+                    new DefaultHttpContext() {Request = {Body = stream, ContentLength = 10}, TraceIdentifier = "ddd"},
+                    new BadRequestResult());
+            var entry = sut.GetHttpBody("Response_ddd");
+
+            result.IsFailure.ShouldBeTrue();
             entry.IsFailure.ShouldBeTrue();
         }
 
         [Fact]
         public void GetHttpBody_WhenBodyExistInCache_ReturnDataAndSuccess()
         {
-            var sut = new HttpBodyAccessor(1, 1000, 1_000, _ => true);
+            var sut = new RequestDataAccessor(1, 1000, 100_000, _ => true);
 
             var context = new DefaultHttpContext()
             {
@@ -213,7 +239,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
             {
                 ["arg"] = "ddd"
             });
-            var result = sut.GetHttpBody("dd");
+            var result = sut.GetHttpBody("Request_dd");
 
             result.IsSuccess.ShouldBeTrue();
             result.Payload.ShouldBe("\"ddd\"");
@@ -222,7 +248,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public void GetHttpBody_WhenBodyNotExistInCache_ReturnFailure()
         {
-            var sut = new HttpBodyAccessor(1, 1000, 1_000, _ => true);
+            var sut = new RequestDataAccessor(1, 1000, 1_000, _ => true);
 
             var context = new DefaultHttpContext()
             {
@@ -236,7 +262,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
             {
                 ["arg"] = "ddd"
             });
-            var result = sut.GetHttpBody("dd321");
+            var result = sut.GetHttpBody("Request_dd321");
 
             result.IsFailure.ShouldBeTrue();
         }

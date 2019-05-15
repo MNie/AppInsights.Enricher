@@ -7,12 +7,11 @@ namespace AppInsights.Enricher.Rewind
     using ResultType;
     using ResultType.Results;
 
-    public interface IHttpBodyAccessor 
+    public interface IRequestDataAccessor 
     {
         Result<string> GetHttpBody(string traceInitializer);
-        Result<Unit> SetHttpBody(HttpContext context, ActionDescriptor descriptor,
-            IDictionary<string, object> args);
+        Result<Unit> SetHttpBody(HttpContext context, ActionDescriptor descriptor, IDictionary<string, object> args);
 
-        Result<Unit> SetHttpBody(HttpContext contextHttpContext, ActionDescriptor descriptor, IActionResult result);
+        Result<Unit> SetHttpBody(HttpContext context, IActionResult result);
     }
 }
