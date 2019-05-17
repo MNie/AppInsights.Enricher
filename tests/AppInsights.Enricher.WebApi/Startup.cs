@@ -48,7 +48,7 @@ namespace AppInsights.Enricher.WebApi
         {
             services.AddSingleton<ITelemetryEnricher, DefaultTelemetryEnricher>();
             services.AddSingleton<IProcessorApplier, DefaultProcessorApplier>();
-            services.AddSingleton<IRequestDataAccessor>(new RequestDataAccessor(1_000, 1_000, 100_000, x => true));
+            services.AddSingleton<IRequestDataAccessor>(new RequestDataAccessor(1_000, 1_000, 100_000));
             services.AddTelemetry<TelemetryProcessor>(_conf)
                 .Bind(s =>
                 {

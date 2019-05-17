@@ -70,13 +70,14 @@
         }
 
         private static bool IsAnError(int code) =>
-            code >= 400
-            && code < 600;
+            (code >= 400
+            && code < 600)
+            || code == 0;
 
-        private Result<string> GetBody(Func<string, string> decorateItentifier)
+        private Result<string> GetBody(Func<string, string> decorateIdentifier)
         {
             var context = _httpContextAccessor.HttpContext;
-            return _requestDataAccessor.GetHttpBody(decorateItentifier(context.TraceIdentifier));
+            return _requestDataAccessor.GetHttpBody(decorateIdentifier(context.TraceIdentifier));
         }
 
         private bool HasBody()

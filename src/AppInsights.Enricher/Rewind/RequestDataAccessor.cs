@@ -19,9 +19,8 @@ namespace AppInsights.Enricher.Rewind
     {
         private readonly MemoryCache _cache;
         private readonly TimeSpan _expirationInMs;
-        private readonly Predicate<HttpContext> _pred;
 
-        public RequestDataAccessor(long cacheSize, int scanFrequencyMs, int expirationInMs, Predicate<HttpContext> pred)
+        public RequestDataAccessor(long cacheSize, int scanFrequencyMs, int expirationInMs)
         {
             var cacheOptions = new MemoryCacheOptions
             {
@@ -30,7 +29,6 @@ namespace AppInsights.Enricher.Rewind
             };
             _cache = new MemoryCache(cacheOptions);
             _expirationInMs = TimeSpan.FromMilliseconds(expirationInMs);
-            _pred = pred;
         }
 
         public Result<string> GetHttpBody(string traceInitializer)

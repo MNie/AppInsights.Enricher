@@ -17,7 +17,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public void SetHttpBody_WhenBodyIsEmpty_ReturnFailureAndDoNotPersistData()
         {
-            var sut = new RequestDataAccessor(10, 1000, 20_000, _ => true);
+            var sut = new RequestDataAccessor(10, 1000, 20_000);
 
             var result =
                 sut.SetHttpBody(
@@ -40,7 +40,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public void SetHttpBody_WhenBodyUnderGivenKeyAlreadyExists_ReturnTheNewestOne()
         {
-            var sut = new RequestDataAccessor(10, 1000, 20_000, _ => true);
+            var sut = new RequestDataAccessor(10, 1000, 20_000);
 
             sut.SetHttpBody(
                 new DefaultHttpContext()
@@ -79,7 +79,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public void SetHttpBody_WhenAnotherBodyExceedsCacheSizeLimit_ReturnFailure()
         {
-            var sut = new RequestDataAccessor(1, 1000, 20_000, _ => true);
+            var sut = new RequestDataAccessor(1, 1000, 20_000);
 
             var context = new DefaultHttpContext()
             {
@@ -119,7 +119,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public async Task SetHttpBody_WhenBodyIsNotEmptyAndPredicateMatches_ReturnSuccessAndPersistDataInCacheFor5SecondsAndRewindDataAndResetPosition()
         {
-            var sut = new RequestDataAccessor(1, 1000, 1_000, _ => true);
+            var sut = new RequestDataAccessor(1, 1000, 1_000);
 
             var context = new DefaultHttpContext()
             {
@@ -152,7 +152,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public void SetHttpBody_WhenReadingBodyErrorOccurred_ReturnFailureAndLogInformation()
         {
-            var sut = new RequestDataAccessor(1, 1000, 1_000, x => true);
+            var sut = new RequestDataAccessor(1, 1000, 1_000);
 
             var stream = new MemoryStream(Encoding.UTF8.GetBytes("ddd"));
             stream.Dispose();
@@ -175,7 +175,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public void SetHttpBody_WhenResponseIsNotAnObject_ReturnFailure()
         {
-            var sut = new RequestDataAccessor(1, 1000, 1_000, x => true);
+            var sut = new RequestDataAccessor(1, 1000, 1_000);
 
             var stream = new MemoryStream(Encoding.UTF8.GetBytes("ddd"));
             stream.Dispose();
@@ -192,7 +192,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public void SetHttpBody_WhenResponseIsOk_ReturnSuccessWithValueFromOk()
         {
-            var sut = new RequestDataAccessor(1, 1000, 100_000, x => true);
+            var sut = new RequestDataAccessor(1, 1000, 100_000);
 
             var stream = new MemoryStream(Encoding.UTF8.GetBytes("ddd"));
             var result =
@@ -209,7 +209,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public void SetHttpBody_WhenResponseIsBadRequestWithData_ReturnsFailure()
         {
-            var sut = new RequestDataAccessor(1, 1000, 1_000, x => true);
+            var sut = new RequestDataAccessor(1, 1000, 1_000);
 
             var stream = new MemoryStream(Encoding.UTF8.GetBytes("ddd"));
             var result =
@@ -225,7 +225,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public void GetHttpBody_WhenBodyExistInCache_ReturnDataAndSuccess()
         {
-            var sut = new RequestDataAccessor(1, 1000, 100_000, _ => true);
+            var sut = new RequestDataAccessor(1, 1000, 100_000);
 
             var context = new DefaultHttpContext()
             {
@@ -248,7 +248,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         [Fact]
         public void GetHttpBody_WhenBodyNotExistInCache_ReturnFailure()
         {
-            var sut = new RequestDataAccessor(1, 1000, 1_000, _ => true);
+            var sut = new RequestDataAccessor(1, 1000, 1_000);
 
             var context = new DefaultHttpContext()
             {
