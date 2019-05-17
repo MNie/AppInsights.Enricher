@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInsights.Enricher.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInsights.Enricher.WebApi", "tests\AppInsights.Enricher.WebApi\AppInsights.Enricher.WebApi.csproj", "{708BD872-09B4-4D1D-8ED5-184485E8F8F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppInsights.Enricher.Contract", "src\AppInsights.Enricher.Contract\AppInsights.Enricher.Contract.csproj", "{B797669C-8918-40B8-AA6B-474BAF3A5E9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,7 @@ Global
 		{94F4FE7C-78C8-4B96-949B-9B6B42D9A0C3} = {18A0BE89-2A86-427F-B6A0-53BF6710F81E}
 		{A38D3544-2B9C-40A1-AA64-387B6C432FD3} = {5B6E6C76-8C16-452A-BCC7-C68F30DFD675}
 		{708BD872-09B4-4D1D-8ED5-184485E8F8F9} = {5B6E6C76-8C16-452A-BCC7-C68F30DFD675}
+		{B797669C-8918-40B8-AA6B-474BAF3A5E9C} = {18A0BE89-2A86-427F-B6A0-53BF6710F81E}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{94F4FE7C-78C8-4B96-949B-9B6B42D9A0C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -33,5 +36,9 @@ Global
 		{708BD872-09B4-4D1D-8ED5-184485E8F8F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{708BD872-09B4-4D1D-8ED5-184485E8F8F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{708BD872-09B4-4D1D-8ED5-184485E8F8F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B797669C-8918-40B8-AA6B-474BAF3A5E9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B797669C-8918-40B8-AA6B-474BAF3A5E9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B797669C-8918-40B8-AA6B-474BAF3A5E9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B797669C-8918-40B8-AA6B-474BAF3A5E9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

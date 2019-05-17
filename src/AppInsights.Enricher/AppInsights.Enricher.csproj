@@ -3,8 +3,8 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp2.1</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>0.0.6</Version>
-        <AssemblyVersion>0.0.6.0</AssemblyVersion>
+        <Version>0.0.7</Version>
+        <AssemblyVersion>0.0.7.0</AssemblyVersion>
         <Copyright>Copyright 2019 (c) Michał Niegrzybowski. All rights reserved.</Copyright>
         <Authors>MNie</Authors>
         <Company>MNie</Company>
@@ -23,6 +23,10 @@
       <PackageReference Include="MNie.ResultType" Version="0.0.5" />
       <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
       <PackageReference Include="OptionType" Version="0.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AppInsights.Enricher.Contract\AppInsights.Enricher.Contract.csproj" />
     </ItemGroup>
 
 </Project>

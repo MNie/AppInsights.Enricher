@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>0.0.1</Version>
+        <AssemblyVersion>0.0.1.0</AssemblyVersion>
+        <Copyright>Copyright 2019 (c) Michał Niegrzybowski. All rights reserved.</Copyright>
+        <Authors>MNie</Authors>
+        <Company>MNie</Company>
+        <DebugType>Full</DebugType>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    </PropertyGroup>
+
+</Project>
