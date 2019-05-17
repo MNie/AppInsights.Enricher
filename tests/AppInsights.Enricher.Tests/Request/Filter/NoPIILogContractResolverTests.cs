@@ -42,6 +42,13 @@ namespace AppInsights.Enricher.Tests.Request.Filter
             public SimpleSensitiveType Field3 { get; set; }
         }
         
+        internal class ComplexSensitiveTypeWithFields
+        {
+            public readonly string Field1;
+            [Sensitive] public readonly string Field2;
+            public readonly SimpleSensitiveType Field3;
+        }
+        
         [Fact]
         public void CreateProperties_WhenTypeHasNoAnyAttributes_ReturnEmptyList()
         {
@@ -76,6 +83,22 @@ namespace AppInsights.Enricher.Tests.Request.Filter
         public void CreateProperties_WhenTypeHasMultipleSensitiveAttributes_ReturnAllPropertiesWithReplacedSensitiveOnes()
         {
             var result = _noPiiLogContractResolver.CreateProperties(typeof(ComplexSensitiveType), new MemberSerialization());
+            
+            result.ElementAt(0).PropertyName.ShouldBe("Field1");
+            result.ElementAt(0).PropertyType.ShouldBe(typeof(string));
+            
+            result.ElementAt(1).PropertyName.ShouldBe("Field2");
+            result.ElementAt(1).PropertyType.ShouldBe(typeof(string));
+            result.ElementAt(1).ValueProvider.GetValue("PII Data");
+            
+            result.ElementAt(2).PropertyName.ShouldBe("Field3");
+            result.ElementAt(2).PropertyType.ShouldBe(typeof(SimpleSensitiveType));
+        }
+        
+        [Fact]
+        public void CreateProperties_WhenTypeHasMultipleSensitiveAttributesAssignedToFields_ReturnAllPropertiesAndFieldsWithReplacedSensitiveOnes()
+        {
+            var result = _noPiiLogContractResolver.CreateProperties(typeof(ComplexSensitiveTypeWithFields), new MemberSerialization());
             
             result.ElementAt(0).PropertyName.ShouldBe("Field1");
             result.ElementAt(0).PropertyType.ShouldBe(typeof(string));

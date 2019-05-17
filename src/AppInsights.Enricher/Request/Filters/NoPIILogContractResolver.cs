@@ -22,9 +22,17 @@ namespace AppInsights.Enricher.Request.Filters
                     .Select(s => s.Name)
                     .ToList();
 
+                var excludedFields = type
+                    .GetFields()
+                    .Where(p => p.GetCustomAttributes(true).Any(t => t.GetType() == typeof(SensitiveAttribute)))
+                    .Select(s => s.Name)
+                    .ToList();
+
+                var toExclude = excludedProperties.Concat(excludedFields).ToList();
+                
                 return props
                     .Select(property => 
-                        excludedProperties.Contains(property.PropertyName)
+                        toExclude.Contains(property.PropertyName)
                             ? HideValue(property)
                             : property
                     )
