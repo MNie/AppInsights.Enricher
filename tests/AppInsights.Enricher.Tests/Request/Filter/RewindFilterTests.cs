@@ -22,7 +22,7 @@ namespace AppInsights.Enricher.Tests.Request.Filter
         public async Task OnActionExecutionAsync_WhenSetBodyReturnSuccess_DoNotLogAnything()
         {
             var httpAccessor = new Mock<IRequestDataAccessor>();
-            httpAccessor.Setup(x => x.SetHttpBody(It.IsAny<HttpContext>(), It.IsAny<ActionDescriptor>(),
+            httpAccessor.Setup(x => x.SetBody(It.IsAny<HttpContext>(), It.IsAny<ActionDescriptor>(),
                     It.IsAny<IDictionary<string, object>>()))
                 .Returns(ResultFactory.CreateSuccess());
             var logger = new Mock<ILogger<RewindFilter>>();
@@ -39,7 +39,7 @@ namespace AppInsights.Enricher.Tests.Request.Filter
         public async Task OnActionExecutionAsync_WhenSetBodyReturnFailure_LogError()
         {
             var httpAccessor = new Mock<IRequestDataAccessor>();
-            httpAccessor.Setup(x => x.SetHttpBody(It.IsAny<HttpContext>(), It.IsAny<ActionDescriptor>(),
+            httpAccessor.Setup(x => x.SetBody(It.IsAny<HttpContext>(), It.IsAny<ActionDescriptor>(),
                     It.IsAny<IDictionary<string, object>>()))
                 .Returns(ResultFactory.CreateFailure("dd"));
             var logger = new Mock<ILogger<RewindFilter>>();
@@ -56,7 +56,7 @@ namespace AppInsights.Enricher.Tests.Request.Filter
         public async Task OnActionExecutionAsync_WhenBodyShouldNotBeIncluded_NotCallSetBody()
         {
             var httpAccessor = new Mock<IRequestDataAccessor>();
-            httpAccessor.Setup(x => x.SetHttpBody(It.IsAny<HttpContext>(), It.IsAny<ActionDescriptor>(),
+            httpAccessor.Setup(x => x.SetBody(It.IsAny<HttpContext>(), It.IsAny<ActionDescriptor>(),
                     It.IsAny<IDictionary<string, object>>()))
                 .Returns(ResultFactory.CreateFailure("dd"));
             var logger = new Mock<ILogger<RewindFilter>>();
@@ -66,7 +66,7 @@ namespace AppInsights.Enricher.Tests.Request.Filter
 
             await filter.OnActionExecutionAsync(new ActionExecutingContext(new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor()), new List<IFilterMetadata>(), new Dictionary<string, object>(), new object()), () => Task.FromResult(new ActionExecutedContext(new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor()), new List<IFilterMetadata>(), new object())));
             
-            httpAccessor.Verify(x => x.SetHttpBody(It.IsAny<HttpContext>(), It.IsAny<ActionDescriptor>(),
+            httpAccessor.Verify(x => x.SetBody(It.IsAny<HttpContext>(), It.IsAny<ActionDescriptor>(),
                 It.IsAny<IDictionary<string, object>>()), Times.Never);
         }
         
@@ -74,7 +74,7 @@ namespace AppInsights.Enricher.Tests.Request.Filter
         public async Task OnResultExecutionAsync_WhenSetBodyReturnSuccess_DoNotLogAnything()
         {
             var httpAccessor = new Mock<IRequestDataAccessor>();
-            httpAccessor.Setup(x => x.SetHttpBody(It.IsAny<HttpContext>(), It.IsAny<IActionResult>()))
+            httpAccessor.Setup(x => x.SetBody(It.IsAny<HttpContext>(), It.IsAny<IActionResult>()))
                 .Returns(ResultFactory.CreateSuccess());
             var logger = new Mock<ILogger<RewindFilter>>();
             var telemetryEnricher = new Mock<ITelemetryEnricher>();
@@ -90,7 +90,7 @@ namespace AppInsights.Enricher.Tests.Request.Filter
         public async Task OnResultExecutionAsync_WhenSetBodyReturnFailure_LogError()
         {
             var httpAccessor = new Mock<IRequestDataAccessor>();
-            httpAccessor.Setup(x => x.SetHttpBody(It.IsAny<HttpContext>(), It.IsAny<IActionResult>()))
+            httpAccessor.Setup(x => x.SetBody(It.IsAny<HttpContext>(), It.IsAny<IActionResult>()))
                 .Returns(ResultFactory.CreateFailure("dd"));
             var logger = new Mock<ILogger<RewindFilter>>();
             var telemetryEnricher = new Mock<ITelemetryEnricher>();
@@ -106,7 +106,7 @@ namespace AppInsights.Enricher.Tests.Request.Filter
         public async Task OnResultExecutionAsync_WhenBodyShouldNotBeIncluded_NotCallSetBody()
         {
             var httpAccessor = new Mock<IRequestDataAccessor>();
-            httpAccessor.Setup(x => x.SetHttpBody(It.IsAny<HttpContext>(), It.IsAny<IActionResult>()))
+            httpAccessor.Setup(x => x.SetBody(It.IsAny<HttpContext>(), It.IsAny<IActionResult>()))
                 .Returns(ResultFactory.CreateFailure("dd"));
             var logger = new Mock<ILogger<RewindFilter>>();
             var telemetryEnricher = new Mock<ITelemetryEnricher>();
@@ -115,7 +115,7 @@ namespace AppInsights.Enricher.Tests.Request.Filter
 
             await filter.OnResultExecutionAsync(new ResultExecutingContext(new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor()), new List<IFilterMetadata>(), new OkObjectResult("dd"), new object()), () => Task.FromResult(new ResultExecutedContext(new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor()), new List<IFilterMetadata>(), new OkObjectResult("dd"), new object())));
             
-            httpAccessor.Verify(x => x.SetHttpBody(It.IsAny<HttpContext>(), It.IsAny<ActionDescriptor>(),
+            httpAccessor.Verify(x => x.SetBody(It.IsAny<HttpContext>(), It.IsAny<ActionDescriptor>(),
                 It.IsAny<IDictionary<string, object>>()), Times.Never);
         }
     }

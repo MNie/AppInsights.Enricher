@@ -6,7 +6,7 @@ namespace AppInsights.Enricher.Request.Filters
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
-    internal class NoPIILogContractResolver : DefaultContractResolver
+    public class NoPIILogContractResolver : DefaultContractResolver
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {

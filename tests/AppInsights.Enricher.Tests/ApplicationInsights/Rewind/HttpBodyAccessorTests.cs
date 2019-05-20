@@ -20,7 +20,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
             var sut = new RequestDataAccessor(10, 1000, 20_000);
 
             var result =
-                sut.SetHttpBody(
+                sut.SetBody(
                     new DefaultHttpContext()
                     {
                         Request = {Body = new MemoryStream(new byte[0]), ContentLength = 0}, TraceIdentifier = "dd"
@@ -31,7 +31,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                     {
                         ["arg"] = null
                     });
-            var entry = sut.GetHttpBody("Request_dd");
+            var entry = sut.GetBody("Request_dd");
 
             result.IsFailure.ShouldBeTrue();
             entry.IsFailure.ShouldBeTrue();
@@ -42,7 +42,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
         {
             var sut = new RequestDataAccessor(10, 1000, 20_000);
 
-            sut.SetHttpBody(
+            sut.SetBody(
                 new DefaultHttpContext()
                 {
                     Request = {Body = new MemoryStream(Encoding.UTF8.GetBytes("ddd")), ContentLength = 10},
@@ -59,14 +59,14 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                 Request = {Body = new MemoryStream(Encoding.UTF8.GetBytes("ddd2312")), ContentLength = 10},
                 TraceIdentifier = "dd"
             };
-            var result = sut.SetHttpBody(context, new Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor()
+            var result = sut.SetBody(context, new Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor()
             {
                 MethodInfo = new DynamicMethod("", typeof(string), new Type[0])
             }, new Dictionary<string, object>()
             {
                 ["arg"] = "ddd2312"
             });
-            var entry = sut.GetHttpBody("Request_dd");
+            var entry = sut.GetBody("Request_dd");
 
             result.IsSuccess.ShouldBeTrue();
             entry.IsSuccess.ShouldBeTrue();
@@ -86,7 +86,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                 Request = {Body = new MemoryStream(Encoding.UTF8.GetBytes("ddd")), ContentLength = 10},
                 TraceIdentifier = "dd"
             };
-            sut.SetHttpBody(context, new Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor()
+            sut.SetBody(context, new Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor()
             {
                 MethodInfo = new DynamicMethod("", typeof(string), new Type[0])
             }, new Dictionary<string, object>()
@@ -94,7 +94,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                 ["arg"] = "ddd"
             });
             var result =
-                sut.SetHttpBody(
+                sut.SetBody(
                     new DefaultHttpContext()
                     {
                         Request = {Body = new MemoryStream(Encoding.UTF8.GetBytes("ddd2312")), ContentLength = 10},
@@ -106,7 +106,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                     {
                         ["arg"] = "ddd2312"
                     });
-            var entry = sut.GetHttpBody("Request_dd");
+            var entry = sut.GetBody("Request_dd");
 
             result.IsFailure.ShouldBeTrue();
             entry.IsSuccess.ShouldBeTrue();
@@ -126,14 +126,14 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                 Request = {Body = new MemoryStream(Encoding.UTF8.GetBytes("ddd")), ContentLength = 10},
                 TraceIdentifier = "dd"
             };
-            var result = sut.SetHttpBody(context, new Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor()
+            var result = sut.SetBody(context, new Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor()
             {
                 MethodInfo = new DynamicMethod("", typeof(string), new Type[0])
             }, new Dictionary<string, object>()
             {
                 ["arg"] = "ddd"
             });
-            var entry = sut.GetHttpBody("Request_dd");
+            var entry = sut.GetBody("Request_dd");
 
             result.IsSuccess.ShouldBeTrue();
             entry.IsSuccess.ShouldBeTrue();
@@ -144,7 +144,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
 
             await Task.Delay(2000);
 
-            var possibleEntry = sut.GetHttpBody("Request_dd");
+            var possibleEntry = sut.GetBody("Request_dd");
 
             possibleEntry.IsFailure.ShouldBeTrue();
         }
@@ -157,7 +157,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
             var stream = new MemoryStream(Encoding.UTF8.GetBytes("ddd"));
             stream.Dispose();
             var result =
-                sut.SetHttpBody(
+                sut.SetBody(
                     new DefaultHttpContext() {Request = {Body = stream, ContentLength = 10}, TraceIdentifier = "ddd"},
                     new Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor()
                     {
@@ -166,7 +166,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                     {
                         ["arg"] = "ddd"
                     });
-            var entry = sut.GetHttpBody("Request_dd");
+            var entry = sut.GetBody("Request_dd");
 
             result.IsSuccess.ShouldBeTrue();
             entry.IsFailure.ShouldBeTrue();
@@ -180,10 +180,10 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
             var stream = new MemoryStream(Encoding.UTF8.GetBytes("ddd"));
             stream.Dispose();
             var result =
-                sut.SetHttpBody(
+                sut.SetBody(
                     new DefaultHttpContext() {Request = {Body = stream, ContentLength = 10}, TraceIdentifier = "ddd"},
                     null as IActionResult);
-            var entry = sut.GetHttpBody("Response_ddd");
+            var entry = sut.GetBody("Response_ddd");
 
             result.IsFailure.ShouldBeTrue();
             entry.IsFailure.ShouldBeTrue();
@@ -196,10 +196,10 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
 
             var stream = new MemoryStream(Encoding.UTF8.GetBytes("ddd"));
             var result =
-                sut.SetHttpBody(
+                sut.SetBody(
                     new DefaultHttpContext() {Request = {Body = stream, ContentLength = 10}, TraceIdentifier = "ddd"},
                     new OkObjectResult("dede"));
-            var entry = sut.GetHttpBody("Response_ddd");
+            var entry = sut.GetBody("Response_ddd");
 
             result.IsSuccess.ShouldBeTrue();
             entry.IsSuccess.ShouldBeTrue();
@@ -213,10 +213,10 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
 
             var stream = new MemoryStream(Encoding.UTF8.GetBytes("ddd"));
             var result =
-                sut.SetHttpBody(
+                sut.SetBody(
                     new DefaultHttpContext() {Request = {Body = stream, ContentLength = 10}, TraceIdentifier = "ddd"},
                     new BadRequestResult());
-            var entry = sut.GetHttpBody("Response_ddd");
+            var entry = sut.GetBody("Response_ddd");
 
             result.IsFailure.ShouldBeTrue();
             entry.IsFailure.ShouldBeTrue();
@@ -232,14 +232,14 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                 Request = {Body = new MemoryStream(Encoding.UTF8.GetBytes("ddd")), ContentLength = 10},
                 TraceIdentifier = "dd"
             };
-            sut.SetHttpBody(context, new Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor()
+            sut.SetBody(context, new Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor()
             {
                 MethodInfo = new DynamicMethod("", typeof(string), new Type[0])
             }, new Dictionary<string, object>()
             {
                 ["arg"] = "ddd"
             });
-            var result = sut.GetHttpBody("Request_dd");
+            var result = sut.GetBody("Request_dd");
 
             result.IsSuccess.ShouldBeTrue();
             result.Payload.ShouldBe("\"ddd\"");
@@ -255,14 +255,14 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                 Request = {Body = new MemoryStream(Encoding.UTF8.GetBytes("ddd")), ContentLength = 10},
                 TraceIdentifier = "dd"
             };
-            sut.SetHttpBody(context, new Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor()
+            sut.SetBody(context, new Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor()
             {
                 MethodInfo = new DynamicMethod("", typeof(string), new Type[0])
             }, new Dictionary<string, object>()
             {
                 ["arg"] = "ddd"
             });
-            var result = sut.GetHttpBody("Request_dd321");
+            var result = sut.GetBody("Request_dd321");
 
             result.IsFailure.ShouldBeTrue();
         }

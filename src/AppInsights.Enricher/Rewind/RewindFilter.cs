@@ -24,7 +24,7 @@ namespace AppInsights.Enricher.Rewind
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             if (_telemetryEnricher.AttachRequest(context.HttpContext))
-                _bodyAccessor.SetHttpBody(context.HttpContext, context.ActionDescriptor, context.ActionArguments)
+                _bodyAccessor.SetBody(context.HttpContext, context.ActionDescriptor, context.ActionArguments)
                     .Bind(
                         x => x.ToSuccess(), 
                         err =>
@@ -39,7 +39,7 @@ namespace AppInsights.Enricher.Rewind
         public override async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
         {
             if (_telemetryEnricher.AttachResponse(context.HttpContext))
-                _bodyAccessor.SetHttpBody(context.HttpContext, context.Result)
+                _bodyAccessor.SetBody(context.HttpContext, context.Result)
                     .Bind(
                         x => x.ToSuccess(), 
                         err =>

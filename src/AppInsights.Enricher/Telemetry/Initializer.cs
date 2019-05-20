@@ -77,7 +77,7 @@
         private Result<string> GetBody(Func<string, string> decorateIdentifier)
         {
             var context = _httpContextAccessor.HttpContext;
-            return _requestDataAccessor.GetHttpBody(decorateIdentifier(context.TraceIdentifier));
+            return _requestDataAccessor.GetBody(decorateIdentifier(context.TraceIdentifier));
         }
 
         private bool HasBody()

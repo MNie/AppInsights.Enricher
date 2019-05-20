@@ -9,9 +9,9 @@ namespace AppInsights.Enricher.Rewind
 
     public interface IRequestDataAccessor 
     {
-        Result<string> GetHttpBody(string traceInitializer);
-        Result<Unit> SetHttpBody(HttpContext context, ActionDescriptor descriptor, IDictionary<string, object> args);
+        Result<string> GetBody(string traceInitializer);
+        Result<Unit> SetBody(HttpContext context, ActionDescriptor descriptor, IDictionary<string, object> args);
 
-        Result<Unit> SetHttpBody(HttpContext context, IActionResult result);
+        Result<Unit> SetBody(HttpContext context, IActionResult result);
     }
 }

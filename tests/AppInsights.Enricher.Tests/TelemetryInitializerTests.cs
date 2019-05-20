@@ -40,7 +40,7 @@ namespace AppInsights.Enricher.Tests
         private static IRequestDataAccessor CreateBodyAccessor()
         {
             var mock = new Mock<IRequestDataAccessor>();
-            mock.Setup(x => x.GetHttpBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
+            mock.Setup(x => x.GetBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
             return mock.Object;
         }
 
@@ -100,7 +100,7 @@ namespace AppInsights.Enricher.Tests
         private static IRequestDataAccessor CreateBodyAccessor()
         {
             var mock = new Mock<IRequestDataAccessor>();
-            mock.Setup(x => x.GetHttpBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
+            mock.Setup(x => x.GetBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
             return mock.Object;
         }
 
@@ -146,7 +146,7 @@ namespace AppInsights.Enricher.Tests
         private static IRequestDataAccessor CreateBodyAccessor()
         {
             var mock = new Mock<IRequestDataAccessor>();
-            mock.Setup(x => x.GetHttpBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
+            mock.Setup(x => x.GetBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
             return mock.Object;
         }
 
@@ -191,7 +191,7 @@ namespace AppInsights.Enricher.Tests
         private static IRequestDataAccessor CreateBodyAccessor()
         {
             var mock = new Mock<IRequestDataAccessor>();
-            mock.Setup(x => x.GetHttpBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
+            mock.Setup(x => x.GetBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
             return mock.Object;
         }
 
@@ -232,7 +232,7 @@ namespace AppInsights.Enricher.Tests
         private static IRequestDataAccessor CreateBodyAccessor()
         {
             var mock = new Mock<IRequestDataAccessor>();
-            mock.Setup(x => x.GetHttpBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
+            mock.Setup(x => x.GetBody(It.IsAny<string>())).Returns("{hehehe: \"jsonik\"".ToSuccess());
             return mock.Object;
         }
 

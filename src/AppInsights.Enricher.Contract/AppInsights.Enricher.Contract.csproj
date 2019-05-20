@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.1</TargetFramework>
+        <TargetFramework>netstandard20</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>0.0.1</Version>
-        <AssemblyVersion>0.0.1.0</AssemblyVersion>
+        <Version>0.0.2</Version>
+        <AssemblyVersion>0.0.2.0</AssemblyVersion>
         <Copyright>Copyright 2019 (c) Michał Niegrzybowski. All rights reserved.</Copyright>
         <Authors>MNie</Authors>
         <Company>MNie</Company>
