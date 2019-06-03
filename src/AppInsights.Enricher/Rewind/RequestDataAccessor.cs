@@ -68,10 +68,16 @@ namespace AppInsights.Enricher.Rewind
         {
             try
             {
-                return JsonConvert.SerializeObject(
-                    (result as ObjectResult).Value,
-                    new JsonSerializerSettings() { ContractResolver = new NoPIILogContractResolver() }
-                ).ToSuccess();
+                switch (result)
+                {
+                    case ObjectResult r when r?.Value != null:
+                        return JsonConvert.SerializeObject(
+                            r.Value,
+                            new JsonSerializerSettings() { ContractResolver = new NoPIILogContractResolver() }
+                        ).ToSuccess();
+                    default:
+                        return string.Empty.ToFailure<string>();
+                }
             }
             catch (Exception e)
             {

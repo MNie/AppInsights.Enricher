@@ -3,8 +3,8 @@
     <PropertyGroup>
         <TargetFramework>netstandard20</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>0.0.8</Version>
-        <AssemblyVersion>0.0.8.0</AssemblyVersion>
+        <Version>0.0.9</Version>
+        <AssemblyVersion>0.0.9.0</AssemblyVersion>
         <Copyright>Copyright 2019 (c) Michał Niegrzybowski. All rights reserved.</Copyright>
         <Authors>MNie</Authors>
         <Company>MNie</Company>
