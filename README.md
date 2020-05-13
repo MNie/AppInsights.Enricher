@@ -1,4 +1,4 @@
-# AppInsights.Enricher
+# AppInsights.Enricher [![NuGet](https://buildstats.info/nuget/AppInsights.Enricher?includePreReleases=true)](https://www.nuget.org/packages/AppInsights.Enricher)
 
 
 Could be downloaded from NuGet:
