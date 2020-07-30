@@ -1,3 +1,6 @@
+using ResultType.Extensions;
+using ResultType.Results;
+
 namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
 {
     using System;
@@ -33,8 +36,8 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                     });
             var entry = sut.GetBody("Request_dd");
 
-            result.IsFailure.ShouldBeTrue();
-            entry.IsFailure.ShouldBeTrue();
+            result.IsFailure().ShouldBeTrue();
+            entry.IsFailure().ShouldBeTrue();
         }
 
         [Fact]
@@ -68,9 +71,9 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
             });
             var entry = sut.GetBody("Request_dd");
 
-            result.IsSuccess.ShouldBeTrue();
-            entry.IsSuccess.ShouldBeTrue();
-            entry.Payload.ShouldBe("\"ddd2312\"");
+            result.IsSuccess().ShouldBeTrue();
+            entry.IsSuccess().ShouldBeTrue();
+            (entry as Success<string>).Payload.ShouldBe("\"ddd2312\"");
 
             context.Request.Body.Position.ShouldBe(0);
             context.Request.Body.CanRead.ShouldBeTrue();
@@ -108,9 +111,9 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                     });
             var entry = sut.GetBody("Request_dd");
 
-            result.IsFailure.ShouldBeTrue();
-            entry.IsSuccess.ShouldBeTrue();
-            entry.Payload.ShouldBe("\"ddd\"");
+            result.IsFailure().ShouldBeTrue();
+            entry.IsSuccess().ShouldBeTrue();
+            (entry as Success<string>).Payload.ShouldBe("\"ddd\"");
 
             context.Request.Body.Position.ShouldBe(0);
             context.Request.Body.CanRead.ShouldBeTrue();
@@ -135,9 +138,9 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
             });
             var entry = sut.GetBody("Request_dd");
 
-            result.IsSuccess.ShouldBeTrue();
-            entry.IsSuccess.ShouldBeTrue();
-            entry.Payload.ShouldBe("\"ddd\"");
+            result.IsSuccess().ShouldBeTrue();
+            entry.IsSuccess().ShouldBeTrue();
+            (entry as Success<string>).Payload.ShouldBe("\"ddd\"");
 
             context.Request.Body.Position.ShouldBe(0);
             context.Request.Body.CanRead.ShouldBeTrue();
@@ -146,7 +149,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
 
             var possibleEntry = sut.GetBody("Request_dd");
 
-            possibleEntry.IsFailure.ShouldBeTrue();
+            possibleEntry.IsFailure().ShouldBeTrue();
         }
 
         [Fact]
@@ -168,10 +171,10 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                     });
             var entry = sut.GetBody("Request_dd");
 
-            result.IsSuccess.ShouldBeTrue();
-            entry.IsFailure.ShouldBeTrue();
+            result.IsSuccess().ShouldBeTrue();
+            entry.IsFailure().ShouldBeTrue();
         }
-        
+
         [Fact]
         public void SetHttpBody_WhenResponseIsNotAnObject_ReturnFailure()
         {
@@ -185,10 +188,10 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                     null as IActionResult);
             var entry = sut.GetBody("Response_ddd");
 
-            result.IsFailure.ShouldBeTrue();
-            entry.IsFailure.ShouldBeTrue();
+            result.IsFailure().ShouldBeTrue();
+            entry.IsFailure().ShouldBeTrue();
         }
-        
+
         [Fact]
         public void SetHttpBody_WhenResponseIsOk_ReturnSuccessWithValueFromOk()
         {
@@ -201,11 +204,11 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                     new OkObjectResult("dede"));
             var entry = sut.GetBody("Response_ddd");
 
-            result.IsSuccess.ShouldBeTrue();
-            entry.IsSuccess.ShouldBeTrue();
-            entry.Payload.ShouldBe("\"dede\"");
+            result.IsSuccess().ShouldBeTrue();
+            entry.IsSuccess().ShouldBeTrue();
+            (entry as Success<string>).Payload.ShouldBe("\"dede\"");
         }
-        
+
         [Fact]
         public void SetHttpBody_WhenResponseIsBadRequestWithData_ReturnsFailure()
         {
@@ -218,8 +221,8 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
                     new BadRequestResult());
             var entry = sut.GetBody("Response_ddd");
 
-            result.IsFailure.ShouldBeTrue();
-            entry.IsFailure.ShouldBeTrue();
+            result.IsFailure().ShouldBeTrue();
+            entry.IsFailure().ShouldBeTrue();
         }
 
         [Fact]
@@ -241,8 +244,8 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
             });
             var result = sut.GetBody("Request_dd");
 
-            result.IsSuccess.ShouldBeTrue();
-            result.Payload.ShouldBe("\"ddd\"");
+            result.IsSuccess().ShouldBeTrue();
+            (result as Success<string>).Payload.ShouldBe("\"ddd\"");
         }
 
         [Fact]
@@ -264,7 +267,7 @@ namespace AppInsights.Enricher.Tests.ApplicationInsights.Rewind
             });
             var result = sut.GetBody("Request_dd321");
 
-            result.IsFailure.ShouldBeTrue();
+            result.IsFailure().ShouldBeTrue();
         }
     }
 }

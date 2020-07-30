@@ -31,7 +31,7 @@ namespace AppInsights.Enricher.Rewind
             _expirationInMs = TimeSpan.FromMilliseconds(expirationInMs);
         }
 
-        public Result<string> GetBody(string traceInitializer)
+        public IResult<string> GetBody(string traceInitializer)
         {
             try
             {
@@ -55,16 +55,16 @@ namespace AppInsights.Enricher.Rewind
             }
         }
 
-        public Result<Unit> SetBody(HttpContext context, ActionDescriptor descriptor,
+        public IResult<Unit> SetBody(HttpContext context, ActionDescriptor descriptor,
             IDictionary<string, object> args) =>
             ReadRequest(descriptor, args)
                 .Bind(body => SetEntryInCache(KeyGenerator.Request(context.TraceIdentifier), body));
 
-        public Result<Unit> SetBody(HttpContext context, IActionResult result) =>
+        public IResult<Unit> SetBody(HttpContext context, IActionResult result) =>
             ReadResponse(result)
                 .Bind(body => SetEntryInCache(KeyGenerator.Response(context.TraceIdentifier), body));
 
-        private static Result<string> ReadResponse(IActionResult result)
+        private static IResult<string> ReadResponse(IActionResult result)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace AppInsights.Enricher.Rewind
             }
         }
 
-        private static Result<string> ReadRequest(ActionDescriptor actionDescriptor,
+        private static IResult<string> ReadRequest(ActionDescriptor actionDescriptor,
             IDictionary<string, object> args)
         {
             try
@@ -110,7 +110,7 @@ namespace AppInsights.Enricher.Rewind
             }
         }
 
-        private Result<Unit> SetEntryInCache(string traceInitializer, string body)
+        private IResult<Unit> SetEntryInCache(string traceInitializer, string body)
         {
             try
             {

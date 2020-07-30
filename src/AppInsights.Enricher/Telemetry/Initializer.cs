@@ -28,7 +28,7 @@
 
             if(_telemetryEnricher.AttachRequest(_httpContextAccessor.HttpContext))
                 AddRequestBody(telemetry);
-            
+
             if(_telemetryEnricher.AttachResponse(_httpContextAccessor.HttpContext))
                 AddResponseBody(telemetry);
         }
@@ -50,7 +50,7 @@
                 }
             }
         }
-        
+
         protected void AddResponseBody(ITelemetry telemetry)
         {
             switch (telemetry)
@@ -74,7 +74,7 @@
             && code < 600)
             || code == 0;
 
-        private Result<string> GetBody(Func<string, string> decorateIdentifier)
+        private IResult<string> GetBody(Func<string, string> decorateIdentifier)
         {
             var context = _httpContextAccessor.HttpContext;
             return _requestDataAccessor.GetBody(decorateIdentifier(context.TraceIdentifier));
