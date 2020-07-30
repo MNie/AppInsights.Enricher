@@ -49,7 +49,7 @@ services.AddApplicationInsightsKubernetesEnricher();
 services.AddSingleton<IProcessorApplier, CustomProcessorApplier>();
 services.AddSingleton<ITelemetryEnricher, CustomTelemetryEnricher>();
 services.AddSingleton<IRequestDataAccessor>(new RequestDataAccessor(1_000, 1_000, 100_000));
-return services.AddTelemetry<TelemetryProcessor>(configuration);
+return services.AddTelemetry<TelemetryProcessor>(new ApplicationInsightsServiceOptions { InstrumentationKey = "your_key" });
 ```
 
 And that's all!
