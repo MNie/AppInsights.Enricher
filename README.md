@@ -53,3 +53,5 @@ return services.AddTelemetry<TelemetryProcessor>(new ApplicationInsightsServiceO
 ```
 
 And that's all!
+
+If you want to read more about using this lib, you could take a look [at my blog post about it](https://www.mnie.me/appinsightslogging).
